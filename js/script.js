@@ -53,8 +53,8 @@ const showPage = (studentList, page) => {
 
 const appendPageLinks = (list) => {
    numberOfPages;
-   const div = document.createElement('div');
-   const ul = document.createElement('ul');
+   let div = document.createElement('div');
+   let ul = document.createElement('ul');
 
    div.className = 'pagination';
    pageClass.appendChild(div);
