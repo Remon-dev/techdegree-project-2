@@ -8,7 +8,7 @@ FSJS project 2 - List Filter and Pagination
 
 
 //page
-const pageDiv = document.getElementsByClassName('page');
+const pageClass = document.getElementsByClassName('page');
 
 //search students
 const pageHeader = document.getElementsByClassName('page-header');
@@ -39,7 +39,7 @@ function getNumberOfPages() {
 const showPage = (studentList, page) => {
    for (let i = 0; i < studentList.length; i++) {
       let firstItem = ((page * itemsPerPage) - 10);
-      let lastItem = ((firstItem - itemsPerPage) - 1);
+      let lastItem = ((firstItem + itemsPerPage) - 1);
       let students = studentList[i];
       if (i >= firstItem && i <= lastItem) {
          students.style.display = 'block';
@@ -49,10 +49,7 @@ const showPage = (studentList, page) => {
    }
 }
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
+
 
 const appendPageLinks = (list) => {
    numberOfPages;
@@ -60,8 +57,9 @@ const appendPageLinks = (list) => {
    const ul = document.createElement('ul');
 
    div.className = 'pagination';
-   pageDiv.appendChild(div);
+   pageClass.appendChild(div);
    div.appendChild(ul);
+
 
    for (let i = 0; i < numberOfPages.length; i++) {
       const li = document.createElement('li');
@@ -101,11 +99,12 @@ function loadList() {
 }
 
 function drawList() {
-   pageDiv.innerHTML = "";
+   pageClass.innerHTML = "";
 
    for (i = 0; i < pageList.length; i++) {
-      pageDiv.innerHTML += pageList[i] + "";
+      pageClass.innerHTML += pageList[i] + "";
    }
 }
+
 window.onload = showPage(studentList, 1);
 window.onload = appendPageLinks(studentList);
