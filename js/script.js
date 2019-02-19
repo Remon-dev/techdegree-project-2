@@ -9,18 +9,15 @@ Remon Tewodros
 
 // .page
 const pageClass = document.querySelector('.page');
-//search students
-const pageHeader = document.getElementsByClassName('page-header');
-const studentSearch = document.getElementsByClassName('student-search');
+
 
 // Students 
 const studentList = document.getElementsByClassName('student-item');
 const studentDetails = document.getElementsByClassName('student-details');
-const avatar = document.getElementsByClassName('avatar');
-const email = document.getElementsByClassName('email');
 
 let itemsPerPage = 10;
 let numberOfPages = 1; // calculates the total number of pages
+
 
 // show only 10 students per page, and 'display none' the rest.
 const showPage = (studentList, page) => {
@@ -72,6 +69,52 @@ const appendPageLinks = (list) => {
    }
 }
 
+
+// search form to search students 
+const searchStudents = () => {
+   const pageHeader = document.getElementsByClassName('page-header')[0];
+   const ul = document.querySelector('.student-list');
+   const list = ul.children;
+
+   // create searchDiv to store input and button
+   const searchDiv = document.createElement('div');
+   const button = document.createElement('button');
+   const searchInput = document.createElement('input');
+
+   searchDiv.className = 'student-search'; // searchDiv
+   pageHeader.appendChild(searchDiv);
+
+   searchInput.className = 'input'; // searchInput
+   searchInput.placeholder = 'Search for students...';
+   searchDiv.appendChild(searchInput);
+
+   button.textContent = 'Search'; // button
+   searchDiv.appendChild(button);
+
+   const filter = () => {
+
+      // loop over list and cheks if input value matches, and display student, if not hide.
+      for (let i = 0; i < list.length; i++) {
+         const search = searchInput.value.toLowerCase()
+         const studentDiv = list[i].firstElementChild.children;
+         const name = studentDiv[1].textContent;
+         const email = studentDiv[2].textContent;
+
+         if (name === search || email.includes(search)) {
+            list[i].style.display = 'block';
+         } else {
+            list[i].style.display = 'none';
+         }
+      }
+   }
+   button.addEventListener('click', () => {
+      filter();
+   });
+   searchInput.addEventListener('keyup', () => {
+      filter();
+   });
+}
 // call the functions
 showPage(studentList, 1);
 appendPageLinks(studentList);
+searchStudents();
