@@ -38,7 +38,7 @@ const showPage = (studentList, page) => {
 const appendPageLinks = (list) => {
 
    //clalculate how many pages are needed for the list
-   numberOfPages = Math.ceil(studentList.length / itemsPerPage);
+   numberOfPages = Math.ceil(list.length / itemsPerPage);
 
    const div = document.createElement('div'); //Create a div, give it the “pagination” class
    const ul = document.createElement('ul'); //Create ul element
@@ -60,7 +60,7 @@ const appendPageLinks = (list) => {
       a.addEventListener('click', (e) => {
          e.preventDefault()
          const links = document.getElementsByTagName('a');
-         showPage(studentList, i + 1);
+         showPage(list, i + 1);
          for (let i = 0; i < links.length; i++) {
             links[i].classList.remove('active');
          }
@@ -68,6 +68,8 @@ const appendPageLinks = (list) => {
       });
    }
 }
+
+
 
 
 // search form to search students 
@@ -91,14 +93,11 @@ const searchStudents = () => {
    button.textContent = 'Search'; // button
    searchDiv.appendChild(button);
 
-   //test
-   // const studentDiv = li.children[0];
-   // const name = studentDiv.children[1].textContent;
-   // console.log(name);
-   //test
+
 
    const filter = () => {
       let results = [];
+      removeErrorMsg();
       // loop over list and cheks if input value matches
       for (let i = 0; i < li.length; i++) {
          const search = input.value.toLowerCase();
@@ -112,30 +111,53 @@ const searchStudents = () => {
             li[i].style.display = 'none';
          }
       }
-      console.log(results);
-      if (results.length <= 10) {
+      if (results.length <= 0) {
+         removeLinks();
+         errorMsg();
+      } else if (results.length <= 10) {
          showPage(results, 1);
-
+         appendPageLinks(results);
+      } else {
+         showPage(results, 1);
+         appendPageLinks(results);
       }
    }
-   const removeLinks = () => {
-      const links = document.getElementsByClassName('pagination');
-      links.parentNode.removeChild(links);
+
+   //append no result message to the dom
+   const errorMsg = () => {
+      const msg = document.createElement('h1');
+      msg.className = 'error';
+      msg.textContent = 'Your search did not match any students.';
+      pageClass.appendChild(msg);
    }
 
+   //remove error message
+   const removeErrorMsg = () => {
+      const error = document.querySelector('.error');
+      if (error) {
+         error.parentNode.removeChild(error);
+      }
+   }
 
-
-
+   //remove pagination links
+   const removeLinks = () => {
+      const links = document.querySelector('.pagination');
+      if (links) {
+         pageClass.removeChild(links);
+      }
+   }
+   //list for keyup event on the input form
    input.addEventListener('keyup', () => {
       filter();
       removeLinks();
-
    });
+
+   //list for click event on the button
    button.addEventListener('click', () => {
       filter();
+
    });
 }
-
 
 // call the functions
 showPage(studentList, 1);
