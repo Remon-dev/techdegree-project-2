@@ -98,6 +98,8 @@ const searchStudents = () => {
    const filter = () => {
       let results = [];
       removeErrorMsg();
+      removeLinks();
+
       // loop over list and cheks if input value matches
       for (let i = 0; i < li.length; i++) {
          const search = input.value.toLowerCase();
@@ -149,13 +151,11 @@ const searchStudents = () => {
    //list for keyup event on the input form
    input.addEventListener('keyup', () => {
       filter();
-      removeLinks();
    });
 
    //list for click event on the button
    button.addEventListener('click', () => {
       filter();
-
    });
 }
 
