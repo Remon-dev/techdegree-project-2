@@ -74,46 +74,69 @@ const appendPageLinks = (list) => {
 const searchStudents = () => {
    const pageHeader = document.getElementsByClassName('page-header')[0];
    const ul = document.querySelector('.student-list');
-   const list = ul.children;
+   const li = ul.children;
 
    // create searchDiv to store input and button
    const searchDiv = document.createElement('div');
    const button = document.createElement('button');
-   const searchInput = document.createElement('input');
+   const input = document.createElement('input');
 
    searchDiv.className = 'student-search'; // searchDiv
    pageHeader.appendChild(searchDiv);
 
-   searchInput.className = 'input'; // searchInput
-   searchInput.placeholder = 'Search for students...';
-   searchDiv.appendChild(searchInput);
+   input.className = 'input'; // input
+   input.placeholder = 'Search for students...';
+   searchDiv.appendChild(input);
 
    button.textContent = 'Search'; // button
    searchDiv.appendChild(button);
 
+   //test
+   // const studentDiv = li.children[0];
+   // const name = studentDiv.children[1].textContent;
+   // console.log(name);
+   //test
+
    const filter = () => {
+      let results = [];
+      // loop over list and cheks if input value matches
+      for (let i = 0; i < li.length; i++) {
+         const search = input.value.toLowerCase();
+         const studentDiv = li[i].children[0];
+         const name = studentDiv.children[1].textContent;
 
-      // loop over list and cheks if input value matches, and display student, if not hide.
-      for (let i = 0; i < list.length; i++) {
-         const search = searchInput.value.toLowerCase()
-         const studentDiv = list[i].firstElementChild.children;
-         const name = studentDiv[1].textContent;
-         const email = studentDiv[2].textContent;
-
-         if (name === search || email.includes(search)) {
-            list[i].style.display = 'block';
+         if (name.includes(search)) {
+            li[i].style.display = 'block';
+            results.push(li[i]);
          } else {
-            list[i].style.display = 'none';
+            li[i].style.display = 'none';
          }
       }
+      console.log(results);
+      if (results.length <= 10) {
+         showPage(results, 1);
+
+      }
    }
+   const removeLinks = () => {
+      const links = document.getElementsByClassName('pagination');
+      links.parentNode.removeChild(links);
+   }
+
+
+
+
+   input.addEventListener('keyup', () => {
+      filter();
+      removeLinks();
+
+   });
    button.addEventListener('click', () => {
       filter();
    });
-   searchInput.addEventListener('keyup', () => {
-      filter();
-   });
 }
+
+
 // call the functions
 showPage(studentList, 1);
 appendPageLinks(studentList);
